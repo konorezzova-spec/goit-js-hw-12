@@ -8,6 +8,7 @@ hideLoader();
 let page = 1;
 let limit = 15;
 let input;
+let heightOfCard;
 
 const searchForm = document.querySelector(".form");
 const loadMoreBtn = document.querySelector(".load-more-btn");
@@ -25,6 +26,8 @@ searchForm.addEventListener('submit', async (event) =>{
             message: "Please enter a search query.",
             backgroundColor: '#EF4040',
         });
+        hideLoader();
+        hideLoadMoreButton();
         return;
     }
 
@@ -45,13 +48,15 @@ searchForm.addEventListener('submit', async (event) =>{
             hideLoadMoreButton();
             return;
             }
-            createGallery(images);
-            page += 1;
+        createGallery(images);
+        page += 1;
+        
     } catch (error) {
         console.log(error);
     }
-            hideLoader();
-            showLoadMoreButton();
+    hideLoader();
+    showLoadMoreButton();
+    
 });
 
 loadMoreBtn.addEventListener('click', handleLoadMore);
@@ -73,10 +78,16 @@ async function handleLoadMore() {
                     backgroundColor: '#EF4040',
                 });
             }
-            hideLoader();
-            createGallery(images);
-            page += 1;
-            showLoadMoreButton();
+        hideLoader();
+        createGallery(images);
+        page += 1;
+        heightOfCard = document.querySelector(".gallery-item").getBoundingClientRect().height;
+        window.scrollBy({
+            top: (heightOfCard * 2),
+            left: 0,
+            behavior: "smooth",
+        });
+        showLoadMoreButton();
     } catch (error) {
         console.error(error);
     }

@@ -8,7 +8,7 @@ const loadMoreBtn = document.querySelector(".load-more-btn");
 
 export function createGallery(images) { 
     const markup = images.map(({largeImageURL, webformatURL, tags, likes, views, comments, downloads}) => `
-        <li>
+        <li class="gallery-item">
             <a href="${largeImageURL}">
                 <img src="${webformatURL}" alt="${tags}" loading="lazy" />
             </a>
