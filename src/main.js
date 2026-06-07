@@ -5,7 +5,7 @@ import { createGallery, clearGallery, showLoader, hideLoader, showLoadMoreButton
 
 hideLoader();
 
-let page = 1;
+let page;
 let limit = 15;
 let input;
 let heightOfCard;
@@ -32,6 +32,7 @@ searchForm.addEventListener('submit', async (event) =>{
     }
 
     clearGallery();
+    page = 1;
     showLoader();
 
     try {
