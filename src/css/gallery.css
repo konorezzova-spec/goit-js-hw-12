@@ -51,6 +51,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 24px;
+    margin-bottom: 32px;
 }
 .gallery li {
     box-sizing: border-box;
@@ -148,5 +149,8 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+.load-more-btn:hover {
+    background-color: #6C8CFF;
 }
 /* #endregion */
