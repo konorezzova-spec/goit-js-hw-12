@@ -34,7 +34,7 @@ function handleSubmit(event) {
                     position: 'topRight',
                     theme: 'dark',
                     title: "Error",
-                    message: "Sorry, there are no images matching your search query. Please try again!",
+                    message: "Sorry, there are no images  matching your search query.Please try again!",
                     backgroundColor: '#EF4040',
                 });
             return;

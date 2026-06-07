@@ -1,7 +1,5 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
     
 const simpleGallery = new SimpleLightbox(".gallery a");
 const gallery = document.querySelector(".gallery");
@@ -43,4 +41,12 @@ export function showLoader() {
 
 export function hideLoader() { 
     loader.style.display = "none";
+}
+
+export function showLoadMoreButton() {
+
+}
+
+export function hideLoadMoreButton() { 
+    
 }
