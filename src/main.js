@@ -80,24 +80,24 @@ searchForm.addEventListener('submit', async (event) =>{
 
 loadMoreBtn.addEventListener('click', handleLoadMore);
 
-async function handleLoadMore() {
+function handleLoadMore() {
     showLoader();
     hideLoadMoreButton();
-    try {
-        const data = await getImagesByQuery(input, page);
-        const images = data.hits;
-        const totalHits = data.totalHits;
-        const totalPages = Math.ceil(totalHits / limit);
-        hideLoader();
+    getImagesByQuery(input, page)
+        .then(data => {
+            const images = data.hits;
+            const totalHits = data.totalHits;
+            const totalPages = Math.ceil(totalHits / limit);
+            hideLoader();
         
-        createGallery(images);
+            createGallery(images);
         
-        heightOfCard = document.querySelector(".gallery-item").getBoundingClientRect().height;
-        window.scrollBy({
-            top: (heightOfCard * 2),
-            left: 0,
-            behavior: "smooth",
-        });
+            heightOfCard = document.querySelector(".gallery-item").getBoundingClientRect().height;
+            window.scrollBy({
+                top: (heightOfCard * 2),
+                left: 0,
+                behavior: "smooth",
+            });
         
             if (page >= totalPages) {
                 return iziToast.error({
@@ -109,17 +109,19 @@ async function handleLoadMore() {
                 });
             }
         
-        page += 1;
-        showLoadMoreButton();
+            page += 1;
+            showLoadMoreButton();
 
-    } catch (error) {
-        hideLoader();
-        iziToast.error({
-            position: 'topRight',
-            theme: 'dark',
-            title: error.name,
-            message: error.message,
-            backgroundColor: '#EF4040',
-        });
+        })
+        .catch((error) => {
+            hideLoader();
+            iziToast.error({
+                position: 'topRight',
+                theme: 'dark',
+                title: error.name,
+                message: error.message,
+                backgroundColor: '#EF4040',
+            });
+        })
+        // .finally(hideLoader())
     }
-}
