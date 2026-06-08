@@ -117,8 +117,8 @@ async function handleLoadMore() {
         iziToast.error({
             position: 'topRight',
             theme: 'dark',
-            title: 'error.name',
-            message: 'error.message',
+            title: error.name,
+            message: error.message,
             backgroundColor: '#EF4040',
         });
     }
