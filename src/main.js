@@ -18,6 +18,10 @@ searchForm.addEventListener('submit', async (event) =>{
     const formData = new FormData(searchForm);
     input = formData.get("search-text").trim();
 
+    clearGallery();
+    hideLoadMoreButton();
+    page = 1;
+
     if (input === "") {
         iziToast.error({
             position: 'topRight',
@@ -26,17 +30,18 @@ searchForm.addEventListener('submit', async (event) =>{
             message: "Please enter a search query.",
             backgroundColor: '#EF4040',
         });
-        hideLoader();
-        hideLoadMoreButton();
         return;
     }
 
-    clearGallery();
     showLoader();
-    page = 1;
 
     try {
-        const images = (await getImagesByQuery(input, page)).hits;
+        const data = await getImagesByQuery(input, page);
+        const images = data.hits;
+        const totalHits = data.totalHits;
+        const totalPages = Math.ceil(totalHits / limit);
+        hideLoader();
+
         if (images.length === 0) {
             iziToast.error({
                 position: 'topRight',
@@ -45,14 +50,16 @@ searchForm.addEventListener('submit', async (event) =>{
                 message: "Sorry, there are no images  matching your search query.Please try again!",
                 backgroundColor: '#EF4040',
             });
-            hideLoader();
-            hideLoadMoreButton();
             return;
-            }
+        }
+        if (page < totalPages) {
+            showLoadMoreButton();
+        }
         createGallery(images);
         page += 1;
         
     } catch (error) {
+        hideLoader();
         iziToast.error({
             position: 'topRight',
             theme: 'dark',
@@ -61,9 +68,6 @@ searchForm.addEventListener('submit', async (event) =>{
             backgroundColor: '#EF4040',
         });
     }
-    hideLoader();
-    showLoadMoreButton();
-    
 });
 
 loadMoreBtn.addEventListener('click', handleLoadMore);
@@ -76,8 +80,8 @@ async function handleLoadMore() {
         const images = data.hits;
         const totalHits = data.totalHits;
         const totalPages = Math.ceil(totalHits / limit);
+        hideLoader();
             if (page >= totalPages) {
-                hideLoadMoreButton();
                 return iziToast.error({
                     position: 'topRight',
                     theme: 'dark',
@@ -86,7 +90,7 @@ async function handleLoadMore() {
                     backgroundColor: '#EF4040',
                 });
             }
-        hideLoader();
+        
         createGallery(images);
         page += 1;
 
@@ -98,7 +102,9 @@ async function handleLoadMore() {
         });
 
         showLoadMoreButton();
+
     } catch (error) {
+        hideLoader();
         iziToast.error({
             position: 'topRight',
             theme: 'dark',
