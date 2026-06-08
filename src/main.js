@@ -41,9 +41,9 @@ searchForm.addEventListener('submit', async (event) =>{
             iziToast.error({
                 position: 'topRight',
                 theme: 'dark',
-                    title: "Error",
-                    message: "Sorry, there are no images  matching your search query.Please try again!",
-                    backgroundColor: '#EF4040',
+                title: "Error",
+                message: "Sorry, there are no images  matching your search query.Please try again!",
+                backgroundColor: '#EF4040',
             });
             hideLoader();
             hideLoadMoreButton();
@@ -53,7 +53,13 @@ searchForm.addEventListener('submit', async (event) =>{
         page += 1;
         
     } catch (error) {
-        console.log(error);
+        iziToast.error({
+            position: 'topRight',
+            theme: 'dark',
+            title: 'error.name',
+            message: 'error.message',
+            backgroundColor: '#EF4040',
+        });
     }
     hideLoader();
     showLoadMoreButton();
@@ -90,9 +96,15 @@ async function handleLoadMore() {
             left: 0,
             behavior: "smooth",
         });
-        
+
         showLoadMoreButton();
     } catch (error) {
-        console.error(error);
+        iziToast.error({
+            position: 'topRight',
+            theme: 'dark',
+            title: 'error.name',
+            message: 'error.message',
+            backgroundColor: '#EF4040',
+        });
     }
 }
