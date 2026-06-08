@@ -32,11 +32,11 @@ searchForm.addEventListener('submit', async (event) =>{
     }
 
     clearGallery();
-    page = 1;
     showLoader();
+    page = 1;
 
     try {
-        const images = (await getImagesByQuery(input, page)).images;
+        const images = (await getImagesByQuery(input, page)).hits;
         if (images.length === 0) {
             iziToast.error({
                 position: 'topRight',
@@ -66,9 +66,10 @@ async function handleLoadMore() {
     showLoader();
     hideLoadMoreButton();
     try {
-        const images = (await getImagesByQuery(input, page)).images;
-        const totalHits = (await getImagesByQuery(input, page)).totalHits;
-            const totalPages = Math.ceil(totalHits / limit);
+        const data = await getImagesByQuery(input, page);
+        const images = data.hits;
+        const totalHits = data.totalHits;
+        const totalPages = Math.ceil(totalHits / limit);
             if (page >= totalPages) {
                 hideLoadMoreButton();
                 return iziToast.error({
@@ -82,12 +83,14 @@ async function handleLoadMore() {
         hideLoader();
         createGallery(images);
         page += 1;
+
         heightOfCard = document.querySelector(".gallery-item").getBoundingClientRect().height;
         window.scrollBy({
             top: (heightOfCard * 2),
             left: 0,
             behavior: "smooth",
         });
+        
         showLoadMoreButton();
     } catch (error) {
         console.error(error);
