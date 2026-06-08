@@ -54,6 +54,14 @@ searchForm.addEventListener('submit', async (event) =>{
         }
         if (page < totalPages) {
             showLoadMoreButton();
+        } else {
+            iziToast.error({
+                position: 'topRight',
+                theme: 'dark',
+                title: "Error",
+                message: "We're sorry, but you've reached the end of search results.",
+                backgroundColor: '#EF4040',
+            });
         }
         createGallery(images);
         page += 1;
@@ -63,8 +71,8 @@ searchForm.addEventListener('submit', async (event) =>{
         iziToast.error({
             position: 'topRight',
             theme: 'dark',
-            title: 'error.name',
-            message: 'error.message',
+            title: error.name,
+            message: error.message,
             backgroundColor: '#EF4040',
         });
     }
@@ -81,6 +89,16 @@ async function handleLoadMore() {
         const totalHits = data.totalHits;
         const totalPages = Math.ceil(totalHits / limit);
         hideLoader();
+        
+        createGallery(images);
+        
+        heightOfCard = document.querySelector(".gallery-item").getBoundingClientRect().height;
+        window.scrollBy({
+            top: (heightOfCard * 2),
+            left: 0,
+            behavior: "smooth",
+        });
+        
             if (page >= totalPages) {
                 return iziToast.error({
                     position: 'topRight',
@@ -91,16 +109,7 @@ async function handleLoadMore() {
                 });
             }
         
-        createGallery(images);
         page += 1;
-
-        heightOfCard = document.querySelector(".gallery-item").getBoundingClientRect().height;
-        window.scrollBy({
-            top: (heightOfCard * 2),
-            left: 0,
-            behavior: "smooth",
-        });
-
         showLoadMoreButton();
 
     } catch (error) {
